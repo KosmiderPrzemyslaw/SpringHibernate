@@ -2,6 +2,7 @@ package pl.kosmider.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import pl.kosmider.dao.AuthorDao;
@@ -49,10 +50,10 @@ public class ValidationController {
         return "validateResult";
     }
 
-    @RequestMapping("validateBook")
+    @GetMapping("validateBook")
     public String validateBook(Model model) {
         Book book = new Book();
-        book.setPages(10);
+        book.setPages(0);
         book.setRating(BigDecimal.valueOf(0));
         book.setPublisher(publisherDao.findPublisherById(7));
         book.setAuthor(authorDao.findAuthorById(1).getFirstName());
@@ -71,7 +72,7 @@ public class ValidationController {
         }
 
         model.addAttribute("violations", violations);
-        return "validate";
+        return "/validate";
     }
 
 

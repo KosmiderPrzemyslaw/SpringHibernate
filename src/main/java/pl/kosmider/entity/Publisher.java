@@ -1,6 +1,10 @@
 package pl.kosmider.entity;
 
+import org.hibernate.validator.constraints.pl.NIP;
+import org.hibernate.validator.constraints.pl.REGON;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -11,8 +15,17 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
     @Column(name = "name")
     private String name;
+
+    @NIP
+    @Column(name = "NIP")
+    private String nip;
+
+    @REGON
+    @Column(name = "Regon")
+    private String Regon;
 
 
     public Publisher(String name) {

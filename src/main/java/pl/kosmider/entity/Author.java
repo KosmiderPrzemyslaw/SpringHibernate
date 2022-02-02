@@ -1,6 +1,10 @@
 package pl.kosmider.entity;
 
+import org.hibernate.validator.constraints.pl.PESEL;
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,14 @@ public class Author {
     @NotNull
     @Column(name = "lastName")
     private String lastName;
+
+    @PESEL
+    @Column(name = "Pesel")
+    private String pesel;
+
+    @Email
+    @Column(name = "email")
+    private String email;
 
     @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
     private List<Book> books = new ArrayList<>();
