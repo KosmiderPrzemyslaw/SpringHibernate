@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import pl.kosmider.dao.AuthorDao;
 import pl.kosmider.dao.BookDao;
 import pl.kosmider.dao.PublisherDao;
-import pl.kosmider.entity.Author;
 import pl.kosmider.entity.Book;
 import pl.kosmider.entity.Person;
-import pl.kosmider.entity.Publisher;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;

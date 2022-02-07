@@ -52,7 +52,7 @@ public class Book {
     public void setPages(Integer pages) {
         this.pages = pages;
     }
-    @Min(1)
+    @Min(value = 1)
     @Column(name = "pages")
     private Integer pages;
 
