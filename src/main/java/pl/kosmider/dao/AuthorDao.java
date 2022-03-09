@@ -6,6 +6,8 @@ import pl.kosmider.entity.Author;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -28,5 +30,11 @@ public class AuthorDao {
     public void delete(Author author) {
         entityManager.remove(entityManager.contains(author) ?
                 author : entityManager.merge(author));
+    }
+
+    public List<Author> getAllAuthors() {
+        Query query = entityManager.createQuery("SELECT a FROM Author a");
+        List<Author> resultList = query.getResultList();
+        return resultList;
     }
 }

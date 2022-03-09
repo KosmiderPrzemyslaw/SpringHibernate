@@ -1,9 +1,9 @@
 package pl.kosmider.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import pl.kosmider.dao.AuthorDao;
 import pl.kosmider.dao.BookDao;
 import pl.kosmider.dao.PublisherDao;
@@ -11,6 +11,8 @@ import pl.kosmider.entity.Author;
 import pl.kosmider.entity.Book;
 import pl.kosmider.entity.Publisher;
 
+import javax.validation.Valid;
+import javax.validation.Validator;
 import java.util.List;
 
 @Controller
@@ -18,32 +20,35 @@ public class BookController {
     private final BookDao bookDao;
     private final PublisherDao publisherDao;
     private final AuthorDao authorDao;
+    private final Validator validator;
 
-    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao) {
+    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao, Validator validator) {
         this.bookDao = bookDao;
         this.publisherDao = publisherDao;
         this.authorDao = authorDao;
+        this.validator = validator;
     }
 
-    @RequestMapping("/book/add")
-    @ResponseBody
-    public String hello() {
+    @GetMapping("/book/add")
+    public String hello(Model model) {
         Book book = new Book();
-        book.setTitle("Nad niemnem");
+        model.addAttribute("book", book);
+        return "addBookForm";
+    }
 
+    @PostMapping("/book/add")
+    public String addBook(@ModelAttribute("book") @Valid Book book, BindingResult result) {
+        if (result.hasErrors()) {
+            return "addBookForm";
+        } else {
+            bookDao.saveBook(book);
+        }
+        return "addBookForm";
+    }
 
-        Author author1 = authorDao.findAuthorById(1);
-        Author author2 = authorDao.findAuthorById(2);
-
-        book.setAuthors(List.of(author1, author2));
-
-        Publisher publisher = new Publisher();
-        publisher.setName("wiosna");
-        publisherDao.savePublisher(publisher);
-        book.setPublisher(publisher);
-        bookDao.saveBook(book);
-
-        return book.toString();
+    @GetMapping("/allBooks")
+    public String showAllBooks(){
+        return "/allBooks";
     }
 
     @RequestMapping("/book/get/{id}")
@@ -63,6 +68,27 @@ public class BookController {
         return book.toString();
     }
 
+    @GetMapping("/selectBookToUpdate")
+    public String selectBookToUpdate(Model model) {
+
+        model.addAttribute("book", new Book());
+
+        return "updateBook";
+    }
+
+    @PostMapping("/selectBookToUpdate")
+    public String selectBookToUpdate(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/updateBook";
+        } else {
+            System.out.println("eureka");
+        }
+        Book bookToUpdate = bookDao.findById(book.getId());
+
+        return "/updateBook";
+    }
+
+
     @RequestMapping("book/delete/{id}")
     @ResponseBody
     public String deleteBook(@PathVariable long id) {
@@ -74,7 +100,6 @@ public class BookController {
     @RequestMapping("allBooks")
     @ResponseBody
     public String books() {
-
 
         List<Book> allBooksFromDb = bookDao.getAllBooksFromDbOrderByRating();
         allBooksFromDb.forEach(System.out::println);
@@ -100,12 +125,30 @@ public class BookController {
 
     @RequestMapping("booksWithAuthorFetch")
     @ResponseBody
-    public List<Book> getBooksWithAuthorUsingFetch(){
+    public List<Book> getBooksWithAuthorUsingFetch() {
         List<Book> allBooksWithAuthorUsingFetch = bookDao.getAllBooksWithAuthorUsingFetch();
-        for (Book b: allBooksWithAuthorUsingFetch
-             ) {
+        for (Book b : allBooksWithAuthorUsingFetch
+        ) {
             System.out.println(b.toString());
         }
-                return allBooksWithAuthorUsingFetch;
+        return allBooksWithAuthorUsingFetch;
+    }
+
+    @ModelAttribute
+    public List<Publisher> publisherList() {
+        List<Publisher> allPublishers = publisherDao.getAllPublishers();
+        return allPublishers;
+    }
+
+    @ModelAttribute
+    public List<Author> authorList() {
+        List<Author> authorList = authorDao.getAllAuthors();
+        return authorList;
+    }
+
+    @ModelAttribute
+    public List<Book> boo() {
+        List<Book> allBooksFromDb = bookDao.getAllBooksFromDb();
+        return allBooksFromDb;
     }
 }

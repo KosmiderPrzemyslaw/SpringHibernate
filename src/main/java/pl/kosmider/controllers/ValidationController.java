@@ -53,12 +53,15 @@ public class ValidationController {
         Book book = new Book();
         book.setPages(0);
         book.setRating(BigDecimal.valueOf(0));
-        book.setPublisher(publisherDao.findPublisherById(7));
-        book.setAuthor(authorDao.findAuthorById(1).getFirstName());
-        book.setRating(BigDecimal.valueOf(2));
+        book.setAuthors(null);
+        book.setPublisher(null);
+        // book.setPublisher(publisherDao.findPublisherById(7));
+        //book.setAuthor(authorDao.findAuthorById(1).getFirstName());
+        //book.setRating(BigDecimal.valueOf(2));
         book.setTitle("O startm drzewie");
 
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
+
 
         if (!violations.isEmpty()) {
             for (ConstraintViolation<Book> constraintViolation : violations) {

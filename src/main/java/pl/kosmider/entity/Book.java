@@ -31,7 +31,7 @@ public class Book {
     @Column(scale = 2, precision = 4)
     private BigDecimal rating;
 
-    @Size(max = 600)
+    @Size(max = 600, min = 10)
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -52,6 +52,7 @@ public class Book {
     public void setPages(Integer pages) {
         this.pages = pages;
     }
+
     @Min(value = 1)
     @Column(name = "pages")
     private Integer pages;
@@ -99,13 +100,11 @@ public class Book {
         return Objects.hash(id, title, rating, description, author, createdOn, updatedOn, publisher, pages, authors);
     }
 
-    public int getPages() {
+
+    public Integer getPages() {
         return pages;
     }
 
-    public void setPages(int pages) {
-        this.pages = pages;
-    }
 
     public List<Author> getAuthors() {
         return authors;
@@ -169,6 +168,7 @@ public class Book {
     public String getDescription() {
         return description;
     }
+
 
     public void setDescription(String description) {
         this.description = description;

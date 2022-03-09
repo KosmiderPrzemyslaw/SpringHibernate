@@ -69,4 +69,10 @@ public class BookDao {
         return book;
     }
 
+    public List<Book> getAllBooksFromDb() {
+        Query query = entityManager.createQuery("select b from Book b");
+        List<Book> resultList = query.getResultList();
+        return resultList;
+    }
+
 }

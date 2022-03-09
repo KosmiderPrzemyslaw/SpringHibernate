@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: przemysaw
-  Date: 03.02.22
-  Time: 00:13
+  Date: 06.03.22
+  Time: 22:57
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -17,7 +17,7 @@
 </head>
 <body>
 <c:forEach items="${violations}" var="violation">
-    ${violation.propertyPath} = ${violation.message}<br>
+    ${violation.propertyPath} = ${violation.message} <br>
 </c:forEach>
 </body>
 </html>

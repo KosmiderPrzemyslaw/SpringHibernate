@@ -1,5 +1,7 @@
 package pl.kosmider.entity;
 
+import org.hibernate.validator.constraints.pl.PESEL;
+
 import javax.persistence.*;
 import javax.xml.transform.Source;
 
@@ -16,6 +18,7 @@ public class Person implements Source {
     @Column(name = "password")
     private String password;
 
+    @PESEL
     @Column(name = "email", unique = true)
     private String email;
 

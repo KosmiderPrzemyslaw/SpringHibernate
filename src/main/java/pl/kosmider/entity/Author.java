@@ -1,13 +1,13 @@
 package pl.kosmider.entity;
 
 import org.hibernate.validator.constraints.pl.PESEL;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "authors")
@@ -44,6 +44,22 @@ public class Author {
     public Author() {
     }
 
+    public String getPesel() {
+        return pesel;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public List<Book> getBooks() {
         return books;
     }
@@ -76,6 +92,23 @@ public class Author {
         this.lastName = lastName;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return id == author.id &&
+                Objects.equals(firstName, author.firstName) &&
+                Objects.equals(lastName, author.lastName) &&
+                Objects.equals(pesel, author.pesel) &&
+                Objects.equals(email, author.email) &&
+                Objects.equals(books, author.books);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, pesel, email, books);
+    }
 
     @Override
     public String toString() {

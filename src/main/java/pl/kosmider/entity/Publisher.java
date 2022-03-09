@@ -27,6 +27,11 @@ public class Publisher {
     @Column(name = "Regon")
     private String Regon;
 
+    public Publisher(@NotNull String name, @NIP String nip, @REGON String regon) {
+        this.name = name;
+        this.nip = nip;
+        Regon = regon;
+    }
 
     public Publisher(String name) {
         this.name = name;
